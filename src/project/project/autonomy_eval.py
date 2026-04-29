@@ -12,49 +12,41 @@ class SolarTimedRun(Node):
         self.shoulder_pub = self.create_publisher(JointTrajectory, '/shoulder_cmd', 10)
         self.elbow_pub = self.create_publisher(JointTrajectory, '/elbow_cmd', 10)
 
-        # Sequence Format: (Action, Duration_in_Seconds, Speed/Turn_Rate)
+        # 3x3 Array Navigation Sequence (Center Row: Panel 2_1, 2_2, 2_3)
         self.sequence = [
             ("ARM_UP", 2.0, 0.0),
             
-            # --- PANEL 1 ---
-            ("DRIVE", 5.0, 0.5),   # Drive to Panel 1
+            # --- PANEL 1 (Center Row) ---
+            ("DRIVE", 5.0, 0.6),   # Drive 3 meters to Panel 1
             ("STOP", 1.0, 0.0),
             ("CLEAN", 6.0, 0.0),   # Execute sweep
             
-            # --- BYPASS PANEL 1 ---
-            ("BACKUP", 1.5, -0.4), # Reverse slightly
-            ("TURN_L", 2.1, 0.5),  # Turn Left 90 degrees
-            ("DRIVE", 4.0, 0.5),   # Drive out of the row
-            ("TURN_R", 2.1, -0.5), # Turn Right 90 degrees
-            ("DRIVE", 8.0, 0.5),   # Drive forward past Panel 1
-            ("TURN_R", 2.1, -0.5), # Turn Right 90 degrees
-            ("DRIVE", 3.0, 0.5),   # Drive into next row
-            ("TURN_L", 2.1, 0.5),  # Turn Left 90 degrees to face Panel 2
+            # --- MOVE TO PANEL 2 ---
+            ("BACKUP", 1.5, -0.5), # Reverse slightly to avoid clipping the panel
+            ("DRIVE", 8.0, 0.5),   # Drive forward 4 meters to next panel
             ("STOP", 1.0, 0.0),
             
-            # --- PANEL 2 ---
+            # --- PANEL 2 (Center Row) ---
             ("CLEAN", 6.0, 0.0),
             
-            # --- BYPASS PANEL 2 ---
-            ("BACKUP", 1.5, -0.4),
-            ("TURN_L", 2.1, 0.5),
-            ("DRIVE", 4.0, 0.5),
-            ("TURN_R", 2.1, -0.5),
+            # --- MOVE TO PANEL 3 ---
+            ("BACKUP", 1.5, -0.5),
             ("DRIVE", 8.0, 0.5),
-            ("TURN_R", 2.1, -0.5),
-            ("DRIVE", 3.0, 0.5),
-            ("TURN_L", 2.1, 0.5),
             ("STOP", 1.0, 0.0),
             
-            # --- PANEL 3 ---
+            # --- PANEL 3 (Center Row) ---
             ("CLEAN", 6.0, 0.0),
+            
+            # --- MISSION COMPLETE ---
+            ("BACKUP", 2.0, -0.5),
+            ("ARM_UP", 2.0, 0.0),
             ("STOP", 1.0, 0.0)
         ]
         
         self.seq_idx = 0
         self.state_start = time.time()
         self.timer = self.create_timer(0.1, self.loop)
-        self.get_logger().info("--- INITIATING TIME-BASED AUTONOMY RUN ---")
+        self.get_logger().info("--- INITIATING 3x3 ARRAY CLEANING SEQUENCE ---")
 
     def loop(self):
         if self.seq_idx >= len(self.sequence):
