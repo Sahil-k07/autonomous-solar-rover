@@ -14,6 +14,16 @@
         <mesh filename="file:///home/sam_k/ros2_sam/src/solar_rover_description/meshes/base_link.stl" scale="0.012 0.012 0.012"/>
       </geometry>
     </visual>
+    <visual>
+      <geometry>
+        <mesh filename="file:///home/sam_k/ros2_sam/src/solar_rover_description/meshes/suspension.stl" scale="0.012 0.012 0.012"/>
+      </geometry>
+    </visual>
+    <visual>
+      <geometry>
+        <mesh filename="file:///home/sam_k/ros2_sam/src/solar_rover_description/meshes/sensor_mast.stl" scale="0.012 0.012 0.012"/>
+      </geometry>
+    </visual>
     <collision>
       <origin xyz="0 0 0.75"/>
       <geometry>
@@ -277,10 +287,11 @@
       </geometry>
     </visual>
   </link>
+  
   <joint name="lidar_joint" type="fixed">
     <parent link="base_link"/>
     <child link="lidar_link"/>
-    <origin xyz="0.75 0 1.05"/>
+    <origin xyz="-0.45 0 1.25"/>
   </joint>
 
   <gazebo>
