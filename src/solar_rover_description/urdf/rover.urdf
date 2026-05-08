@@ -287,11 +287,10 @@
       </geometry>
     </visual>
   </link>
-  
   <joint name="lidar_joint" type="fixed">
     <parent link="base_link"/>
     <child link="lidar_link"/>
-    <origin xyz="-0.45 0 1.25"/>
+    <origin xyz="0.75 0 1.05"/>
   </joint>
 
   <gazebo>
@@ -307,6 +306,10 @@
       <wheel_diameter>0.64</wheel_diameter>
       <publish_odom>true</publish_odom>
       <publish_odom_tf>true</publish_odom_tf>
+      <!-- Added these 3 lines to make RViz Odometry work -->
+      <publish_wheel_tf>true</publish_wheel_tf>
+      <odometry_frame>odom</odometry_frame>
+      <robot_base_frame>base_footprint</robot_base_frame>
     </plugin>
     <plugin name="shoulder_controller" filename="libgazebo_ros_joint_pose_trajectory.so">
       <ros>
