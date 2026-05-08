@@ -20,7 +20,7 @@ A fully simulated autonomous robotics project built with **ROS 2 (Humble)** and 
 **1. Clone the repository and build the workspace:**
 ```bash
 
-git clone [https://github.com/YOUR-USERNAME/autonomous-solar-rover-ros2.git](https://github.com/YOUR-USERNAME/autonomous-solar-rover-ros2.git)
+git clone [https://github.com/Sahil-k07/autonomous-solar-panel-rover-ros2.git](https://github.com/Sahil-k07/autonomous-solar-panel-rover-ros2.git)
 cd autonomous-solar-rover-ros2
 colcon build --symlink-install
 source install/setup.bash
